@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | College Event Hub</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e; /* Dark Background */
+            color: #fff; /* White text on dark background */
+            margin: 0;
+            padding: 0;
+        }
+        h2, p, ul {
+            color: #fff;
+        }
+
+        /* Header */
+        header {
+            background-color: #5c31ff; /* Bold Purple */
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+        header a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        header a:hover {
+            color: #ff3687; /* Vibrant Pink */
+        }
+
+        /* About Us Section */
+        #about {
+            padding: 40px;
+            background-color: #1a1a2e; /* Dark Background */
+            color: #fff;
+        }
+        #about h2 {
+            text-align: center;
+            color: #5c31ff; /* Bold Purple */
+        }
+        #about p {
+            font-size: 18px;
+            color: #fff; /* White text */
+            line-height: 1.6;
+        }
+        #about ul {
+            font-size: 18px;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+        #about ul li {
+            color: #ff3687; /* Vibrant Pink */
+        }
+        #about ul li::before {
+            content: '✔';
+            color: #09f2d6; /* Bright Teal */
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a2e; /* Dark Background */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        footer a {
+            color: #09f2d6; /* Bright Teal */
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        footer a:hover {
+            color: #ff3687; /* Vibrant Pink */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header or Navigation -->
+    <header>
+        <nav>
+            <a href="{{ url_for('old_page') }}">Home</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+        </nav>
+    </header>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <div style="max-width: 900px; margin: auto;">
+            <h2>About Us</h2>
+            <p><strong>Welcome to College Event Hub!</strong></p>
+            <p>College Event Hub is your one-stop destination for discovering, managing, and participating in college events.
+               Whether you're an <strong>Admin</strong>, <strong>Organizer</strong>, or <strong>Student</strong>, our platform is designed to make the event experience seamless and efficient for everyone.</p>
+            <p>Our mission is to bridge the gap between event creators and attendees, making college life more engaging and organized.
+               From tech fests and cultural nights to workshops and feedback, everything is managed in real-time with a user-friendly interface.</p>
+            <ul>
+                <li>Event approval and tracking for Admins</li>
+                <li>Easy event creation and management for Organizers</li>
+                <li>Quick registration and feedback options for Students</li>
+                <li>Real-time updates and clean dashboard views</li>
+                <li>Secure login for different user roles</li>
+                <li>Support for both tech and non-tech events</li>
+            </ul>
+            <p>Join us in transforming the way college events are organized and experienced!</p>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 College Event Hub. All Rights Reserved.</p>
+        <p>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </p>
+    </footer>
+</body>
+</html>

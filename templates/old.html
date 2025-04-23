@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College Event Hub</title>
+  <style>
+    /* FONTS */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
+
+    /* VARIABLES */
+    :root {
+      /* Primary color palette - inspired by Fable's bold design */
+      --primary: #5c31ff;
+      --primary-dark: #4021d9;
+      --secondary: #ff3687;
+      --accent: #09f2d6;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --gray: #686877;
+      --success: #00c853;
+      --warning: #ffc107;
+      --danger: #ff5252;
+
+      /* Spacing */
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2.5rem;
+    }
+
+    /* RESET & BASE STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* LAYOUT */
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: var(--spacing-md) var(--spacing-xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand i {
+      color: var(--accent);
+      font-size: 1.8rem;
+      margin-right: var(--spacing-sm);
+    }
+
+    .navbar-brand h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--light);
+    }
+
+    .navbar-menu {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      gap: var(--spacing-xl);
+    }
+
+    .navbar-item {
+      position: relative;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-item:hover {
+      color: var(--accent);
+    }
+
+    .navbar-item.active {
+      color: var(--accent);
+    }
+
+    .navbar-item.active::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--accent);
+      border-radius: 3px;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: var(--spacing-md);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      background: linear-gradient(rgba(26, 26, 46, 0.8), rgba(26, 26, 46, 0.9)),
+        url('/api/placeholder/1600/800') center/cover no-repeat;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--spacing-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(92, 49, 255, 0.2) 0%,
+        transparent 70%
+      );
+    }
+
+    .hero-content {
+      max-width: 800px;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: var(--spacing-md);
+      background: linear-gradient(90deg, var(--accent), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: var(--spacing-xl);
+      color: var(--light);
+      opacity: 0.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    /* BUTTON STYLES */
+    .btn {
+      padding: var(--spacing-md) var(--spacing-xl);
+      border-radius: 30px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--light);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(92, 49, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: var(--light);
+    }
+
+    .btn-secondary:hover {
+      opacity: 0.9;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 54, 135, 0.3);
+    }
+
+    .btn-accent {
+      background-color: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-accent:hover {
+      background-color: var(--accent);
+      color: var(--dark);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(9, 242, 214, 0.3);
+    }
+
+    /* SECTION STYLES */
+    .section {
+      padding: var(--spacing-xl) var(--spacing-xl);
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-lg);
+      text-align: center;
+      position: relative;
+      padding-bottom: var(--spacing-md);
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 4px;
+    }
+
+    .section-description {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto var(--spacing-xl);
+      font-size: 1.1rem;
+      color: var(--light);
+      opacity: 0.8;
+    }
+
+    /* CLUB CARDS */
+    .clubs-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-xl);
+    }
+
+    .club-card {
+      background: linear-gradient(145deg, #222235, #1d1d2e);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .club-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .club-card:hover .club-image {
+      transform: scale(1.05);
+    }
+
+    .club-image-container {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .club-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .club-content {
+      padding: var(--spacing-lg);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .club-badge {
+      position: absolute;
+      top: var(--spacing-md);
+      right: var(--spacing-md);
+      padding: var(--spacing-xs) var(--spacing-md);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    .badge-technical {
+      background-color: var(--primary);
+      color: var(--light);
+    }
+
+    .badge-cultural {
+      background-color: var(--secondary);
+      color: var(--light);
+    }
+
+    .badge-sports {
+      background-color: var(--accent);
+      color: var(--dark);
+    }
+
+    .club-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+      color: var(--light);
+    }
+
+    .club-description {
+      font-size: 0.95rem;
+      color: var(--light);
+      opacity: 0.8;
+      margin-bottom: var(--spacing-lg);
+      flex: 1;
+    }
+
+    .club-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .club-stats {
+      display: flex;
+      gap: var(--spacing-md);
+      font-size: 0.85rem;
+      color: var(--light);
+      opacity: 0.7;
+    }
+
+    .club-action {
+      margin-top: var(--spacing-md);
+    }
+
+    /* UPCOMING EVENTS SECTION */
+    .events-slider {
+      display: flex;
+      overflow-x: auto;
+      gap: var(--spacing-lg);
+      padding: var(--spacing-md) 0;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      margin: 0 -var(--spacing-xl);
+      padding: 0 var(--spacing-xl);
+    }
+
+    .events-slider::-webkit-scrollbar {
+      display: none;
+    }
+
+    .event-card {
+      min-width: 300px;
+      background: linear-gradient(145deg, #222235, #1d1d2e);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      flex: 0 0 auto;
+    }
+
+    .event-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .event-image {
+      height: 160px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .event-content {
+      padding: var(--spacing-lg);
+    }
+
+    .event-date {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .event-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+      color: var(--light);
+    }
+
+    .event-host {
+      font-size: 0.85rem;
+      margin-bottom: var(--spacing-md);
+      color: var(--light);
+      opacity: 0.7;
+    }
+
+    .event-host span {
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .view-all-container {
+      text-align: center;
+      margin-top: var(--spacing-xl);
+    }
+
+    /* ROLES SECTION */
+    .roles-container {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-xl);
+      flex-wrap: wrap;
+    }
+
+    .role-card {
+      background: linear-gradient(145deg, #222235, #1d1d2e);
+      border-radius: 16px;
+      padding: var(--spacing-xl);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      flex: 1;
+      min-width: 300px;
+      max-width: 350px;
+    }
+
+    .role-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .role-card.admin {
+      border-color: var(--primary);
+    }
+
+    .role-card.organizer {
+      border-color: var(--secondary);
+    }
+
+    .role-card.student {
+      border-color: var(--accent);
+    }
+
+    .role-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-lg);
+      font-size: 2rem;
+    }
+
+    .admin .role-icon {
+      background-color: var(--primary);
+      color: var(--light);
+    }
+
+    .organizer .role-icon {
+      background-color: var(--secondary);
+      color: var(--light);
+    }
+
+    .student .role-icon {
+      background-color: var(--accent);
+      color: var(--dark);
+    }
+
+    .role-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-sm);
+      color: var(--light);
+    }
+
+    .role-description {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: var(--spacing-lg);
+      color: var(--light);
+    }
+
+    /* FOOTER */
+    .footer {
+      background-color: #151525;
+      padding: var(--spacing-xl) 0;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-xl);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-xl);
+    }
+
+    .footer-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: var(--spacing-lg);
+      color: var(--light);
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .footer-link {
+      color: var(--light);
+      opacity: 0.7;
+      transition: all 0.3s ease;
+    }
+
+    .footer-link:hover {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-md);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      background-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding: var(--spacing-lg) 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: var(--spacing-xl);
+      color: var(--light);
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animated {
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .roles-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .role-card {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+
+      .navbar-menu {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: 2.3rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--light);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+
+    /* Accessibility Features */
+    .btn:focus, 
+    .navbar-item:focus,
+    .club-card:focus,
+    .event-card:focus,
+    .role-card:focus,
+    .footer-link:focus,
+    .social-icon:focus {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* Skip to main content link for screen readers */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--primary);
+      color: white;
+      padding: 8px;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+    .logo-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <div class="main-container">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar-brand">
+      
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
+        <h1>College Event Hub</h1>
+      </div>
+
+      <ul class="navbar-menu">
+        <li class="navbar-item active"><a href="{{ url_for('home') }}">Home</a></li>
+        <li class="navbar-item"><a href="{{ url_for('display') }}">Events</a></li>
+        <li class="navbar-item"><a href="{{ url_for('display') }}">Clubs</a></li>
+        <li class="navbar-item"><a href="{{ url_for('about') }}">About</a></li>
+        <li class="navbar-item"><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+
+      <div class="auth-buttons">
+        <a href="{{ url_for('new_page') }}" class="btn btn-accent">Log In</a>
+        <button class="mobile-menu-btn" aria-label="Toggle mobile menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main">
+      <!-- HERO SECTION -->
+      <section class="hero">
+        <div class="hero-content animated">
+          <h1 class="hero-title">Welcome to College Event Hub</h1>
+          <p class="hero-subtitle">
+            Your gateway to all clubs, events, and activities happening on campus
+          </p>
+          <div class="hero-buttons">
+            <a href="{{ url_for('display') }}" class="btn btn-primary">
+              <i class="fas fa-calendar-alt"></i>
+              Explore Events
+            </a>
+            <a href="{{ url_for('display') }}" class="btn btn-secondary">
+              <i class="fas fa-users"></i>
+              Discover Clubs
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLUBS SECTION -->
+      <section class="section">
+        <h2 class="section-title animated">Our Campus Clubs</h2>
+        <p class="section-description animated">
+          Explore various clubs and organizations that make our campus vibrant and dynamic
+        </p>
+
+        <div class="clubs-container">
+          <!-- Technical Clubs -->
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsbVLeJbTuPgXGvwkpGs-ZLI3YCORTLYGT_A&s" alt="LDC Club" class="club-image" />
+              <div class="club-badge badge-technical">Technical</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">LDC (Literacy and Debate club)</h3>
+              <p class="club-description">
+                From thought-provoking debates to creative storytelling, we’ve had an incredible journey of words, ideas, and expression. Here’s to the memories we made and the voices we amplified! 
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 125 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://png.pngtree.com/thumb_back/fh260/background/20220215/pngtree-vector-technology-circle-and-technical-background-image_975750.jpg" alt="CSI Club" class="club-image" />
+              <div class="club-badge badge-technical">Technical</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">CSI (Computer Society of India)</h3>
+              <p class="club-description">
+                The student chapter of CSI facilitates research, knowledge sharing, and learning in the field of computer science.
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 180 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://media.licdn.com/dms/image/v2/C560BAQG1lqUKPyERsg/company-logo_200_200/company-logo_200_200/0/1661100163946/gdsc_cvr_logo?e=2147483647&v=beta&t=K3vKbw4gBd5PoN4Njbm5nqK6wvpW9gFhEt0dS7V-S40" alt="GDG Club" class="club-image" />
+              <div class="club-badge badge-technical">Technical</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">GDG (Google Developer Group)</h3>
+              <p class="club-description">
+                A community of developers interested in Google's technologies and tools, fostering innovation and collaboration.
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 150 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7gdpgcGgWTis-Ry9WZTxnhEdi_gXI3POWiA&s" alt="Cybernauts Club" class="club-image" />
+              <div class="club-badge badge-technical">Technical</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">Cybernauts</h3>
+              <p class="club-description">
+                Focused on cybersecurity, ethical hacking, and digital forensics, educating students about online safety and security practices.
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 95 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://onlinestandart.com/wp-content/uploads/2024/05/ieee-1024x576.webp" alt="IEEE Club" class="club-image" />
+              <div class="club-badge badge-technical">Technical</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">IEEE Student Branch</h3>
+              <p class="club-description">
+                The student branch of IEEE promotes technical advancement, professional growth, and networking opportunities in engineering fields.
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 140 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://media.licdn.com/dms/image/v2/D4D12AQFH2_qn167Dvw/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1659935081895?e=2147483647&v=beta&t=JkQAfk0AgVkUm7Db-6eXz9_RNDnTQKteP26rEJ1R0Do" alt="NewGen Club" class="club-image" />
+              <div class="club-badge badge-technical">Technical</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">NewGen</h3>
+              <p class="club-description">
+                A club for emerging technologies like AI, ML, IoT, and blockchain, focusing on hands-on projects and industry applications.
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 110 members</div>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+
+          <!-- Cultural Clubs -->
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://static.vecteezy.com/system/resources/previews/037/044/052/non_2x/ai-generated-studio-shot-of-black-headphones-over-music-note-explosion-background-with-empty-space-for-text-photo.jpg" alt="Cadenza Club" class="club-image" />
+              <div class="club-badge badge-cultural">Cultural</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">Cadenza</h3>
+              <p class="club-description">
+                The official music club of the college, providing a platform for budding musicians to showcase their talent and collaborate.
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 85 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="club-card" tabindex="0">
+            <div class="club-image-container">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTa4tQgZLLoNXR1PeZdFOoAog7xCA4fsQUJ1z_7As_dQPxxLICG0cucSao56OQoIQu4vUs&usqp=CAU" alt="Soul Steppers Club" class="club-image" />
+              <div class="club-badge badge-cultural">Cultural</div>
+            </div>
+            <div class="club-content">
+              <h3 class="club-title">Soul Steppers</h3>
+              <p class="club-description">
+                Soul Steppers is the official dance club of CVR, where passion meets rhythm. From classical to hip-hop, we groove, move, and express through every beat. Join us to step up your style and steal the spotlight!
+              </p>
+              <div class="club-footer">
+                <div class="club-stats">
+                  <div class="stat"><i class="fas fa-users"></i> 92 members</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+              <!-- The rest of the code seems to be cut off here -->
+           
+      </section>
+
+      <!-- FOOTER would follow here -->
+
+    </main>
+  </div>
+</body>
+</html>

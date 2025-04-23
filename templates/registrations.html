@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Hub - Registrations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Color Palette */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a2e;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #252546;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #5c31ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .logo-text span {
+            color: #09f2d6;
+        }
+
+        .menu {
+            flex: 1;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .menu li.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #5c31ff;
+        }
+
+        .menu li.active a {
+            background-color: rgba(92, 49, 255, 0.1);
+            color: #09f2d6;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .menu a:hover {
+            background-color: rgba(92, 49, 255, 0.05);
+            color: #09f2d6;
+        }
+
+        .menu a i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-profile {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 20px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #5c31ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h3 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .user-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #6a6a8e;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #1a1a2e;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Registrations Section */
+        .registrations-section {
+            background-color: #252546;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .registrations-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .registrations-table th {
+            background-color: #1a1a2e;
+            padding: 12px 15px;
+            text-align: left;
+            color: #09f2d6;
+            font-weight: 500;
+            border-bottom: 1px solid #333350;
+        }
+
+        .registrations-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #333350;
+            color: white;
+        }
+
+        .registrations-table tr:hover {
+            background-color: rgba(92, 49, 255, 0.05);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="logo-text">
+                    College Event <span>Hub</span>
+                </div>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li>
+                        <a href="organizerdashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <li class="active">
+                        <a href="registrations-page.html">
+                            <i class="fas fa-user-friends"></i>
+                            <span>Registrations</span>
+                        </a>
+                    </li>
+                
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">O</div>
+                <div class="user-info">
+                    <h3>Organizer User</h3>
+                    <p>Event Organizer</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Registration Management</h1>
+            </div>
+
+            <!-- Registrations List Section -->
+            <div class="registrations-section">
+                <table class="registrations-table">
+                    <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Roll Number</th>
+                            <th>Branch</th>
+                            <th>Event</th>
+                            <th>Registration Date</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registration-table-body">
+                        {% for reg in all_regs %}
+                          <tr>
+                            <td>
+                              <div class="participant-name">{{ reg.name }}</div>
+                              <div class="participant-email" style="font-size: 12px; color: #6a6a8e;">{{ reg.email }}</div>
+                            </td>
+                            <td>{{ reg.roll_no }}</td>
+                            <td>{{ reg.branch }}</td>
+                            <td>{{ reg.event }}</td>
+                            <td>{{ reg.regDate }}</td>
+                            <td>₹{{ reg.amount }}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                      
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

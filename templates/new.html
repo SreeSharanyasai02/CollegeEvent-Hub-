@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College Event Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="container">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
+    
+    <h1 class="main-title">College Event Hub</h1>
+    <p class="subtitle">Select your role to continue</p>
+    <div class="roles">
+      <!-- Admin Role -->
+      <div class="role-card admin">
+        <div class="icon-circle admin-circle">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h3>Admin</h3>
+        <p>Manage events, users, and system settings. Full control over the platform.</p>
+        <a href="{{ url_for('admin_login') }}">
+          <button class="role-button admin-button">Continue as Admin</button>
+        </a>
+      </div>
+      
+      <!-- Organizer Role -->
+      <div class="role-card organizer">
+        <div class="icon-circle organizer-circle">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h3>Organizer</h3>
+        <p>Create and manage your own events, track registrations, and more.</p>
+        <a href="{{ url_for('organizer_login') }}">
+          <button class="role-button organizer-button">Continue as Organizer</button>
+        </a>
+      </div>
+      
+      <!-- Student Role -->
+      <div class="role-card student">
+        <div class="icon-circle student-circle">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <h3>Student</h3>
+        <p>Discover and register for events, track your participation history.</p>
+        <a href="{{ url_for('student_login') }}">
+          <button class="role-button student-button">Continue as Student</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

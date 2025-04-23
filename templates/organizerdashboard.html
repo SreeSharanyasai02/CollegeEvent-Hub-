@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Hub - Organizer Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='a2styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Additional organizer-specific styles */
+        .form-section {
+            background-color: #252546;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a2e;
+            border: 1px solid #333350;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-upload-btn {
+            border: 1px solid #333350;
+            color: white;
+            background-color: #333350;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6a6a8e;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-draft {
+            background-color: transparent;
+            color: #09f2d6;
+            border: 1px solid #09f2d6;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            background-color: #ff3687;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-approved {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .status-draft {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .action-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .view-icon {
+            background-color: #09f2d6;
+            color: white;
+        }
+
+        .edit-icon {
+            background-color: #5c31ff;
+            color: white;
+        }
+
+        .delete-icon {
+            background-color: #ff3687;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="logo-text">
+                    College Event <span>Hub</span>
+                </div>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li class="active">
+                        <a href="#">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                   
+                    <li>
+                        <li>
+                            <a href="{{ url_for('organizer_registrations') }}">
+                                <i class="fas fa-user-friends"></i>
+                                <span>Registrations</span>
+                            </a>
+                        </li>
+                        
+                    
+                    
+                    
+            
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">O</div>
+                <div class="user-info">
+                    <h3>Organizer User</h3>
+                    <p>Event Organizer</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Organizer Dashboard</h1>
+                <button class="btn-create" id="showCreateFormBtn">
+                    <i class="fas fa-plus"></i> Create New Event
+                </button>
+            </div>
+
+            <!-- Create Event Form -->
+            <div class="form-section hidden" id="createEventForm">
+                <h2>Create New Event</h2>
+                <form id="eventForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title</label>
+                            <input type="text" class="form-control" id="eventTitle" placeholder="Enter event title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventCategory">Event Category</label>
+                            <select class="form-control" id="eventCategory" required>
+                                <option value="" disabled selected>Select category</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Cultural">Cultural</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Workshop">Workshop</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventDate">Date & Time</label>
+                            <input type="datetime-local" class="form-control" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventVenue">Venue</label>
+                            <input type="text" class="form-control" id="eventVenue" placeholder="Enter venue" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="maxParticipants">Maximum Participants</label>
+                            <input type="number" class="form-control" id="maxParticipants" placeholder="Enter maximum participants" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regFee">Registration Fee (₹)</label>
+                            <input type="number" class="form-control" id="regFee" placeholder="Enter registration fee" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventDescription">Event Description</label>
+                        <textarea class="form-control" id="eventDescription" placeholder="Describe your event..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Event Banner</label>
+                        <div class="file-upload">
+                            <button type="button" class="file-upload-btn">
+                                <i class="fas fa-upload"></i> Choose file
+                            </button>
+                            <input type="file" id="eventBanner" accept="image/*">
+                        </div>
+                        <div class="file-name" id="fileName">No file chosen</div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn-draft" id="saveDraftBtn">Save as Draft</button>
+                        <button type="submit" class="btn-submit">Submit for Approval</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Events List Section -->
+            <div class="events-section" id="eventsListSection">
+                <h2>My Events</h2>
+                <table class="events-table">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Registrations</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventsTableBody">
+                        <!-- Events will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const showCreateFormBtn = document.getElementById('showCreateFormBtn');
+            const createEventForm = document.getElementById('createEventForm');
+            const eventForm = document.getElementById('eventForm');
+            const saveDraftBtn = document.getElementById('saveDraftBtn');
+            const eventBanner = document.getElementById('eventBanner');
+            const fileName = document.getElementById('fileName');
+            const eventsTableBody = document.getElementById('eventsTableBody');
+
+            // Load organizer's events when page loads
+            loadOrganizerEvents();
+
+            // Show/hide create event form
+            showCreateFormBtn.addEventListener('click', function() {
+                createEventForm.classList.toggle('hidden');
+                if (!createEventForm.classList.contains('hidden')) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+
+            // File upload display
+            eventBanner.addEventListener('change', function() {
+                fileName.textContent = this.files.length > 0 ? this.files[0].name : 'No file chosen';
+            });
+
+            // Save draft
+            saveDraftBtn.addEventListener('click', function() {
+                submitEvent('Draft');
+            });
+
+            // Submit form
+            eventForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitEvent('Pending');
+            });
+
+            // Load organizer's events from server
+            function loadOrganizerEvents() {
+                fetch('/get-organizer-events')
+                    .then(response => response.json())
+                    .then(events => {
+                        eventsTableBody.innerHTML = '';
+                        events.forEach(event => {
+                            const date = new Date(event.dateTime);
+                            const formattedDate = date.toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                            });
+                            
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${event.title}</td>
+                                <td>${formattedDate}</td>
+                                <td>
+                                    <span class="status-badge ${getStatusClass(event.status)}">
+                                        ${event.status}
+                                    </span>
+                                </td>
+                                <td>${event.current_participants} / ${event.maxParticipants}</td>
+                                <td>
+                                    <div class="action-icons">
+                                        <div class="action-icon view-icon" onclick="viewEvent(${event.id})">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                        <div class="action-icon edit-icon" onclick="editEvent(${event.id})">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="action-icon delete-icon" onclick="deleteEvent(${event.id})">
+                                            <i class="fas fa-trash"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            `;
+                            eventsTableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error loading events:', error);
+                    });
+            }
+
+            // Submit event to server
+            function submitEvent(status) {
+                const formData = {
+                    title: document.getElementById('eventTitle').value,
+                    category: document.getElementById('eventCategory').value,
+                    dateTime: document.getElementById('eventDate').value,
+                    venue: document.getElementById('eventVenue').value,
+                    maxParticipants: document.getElementById('maxParticipants').value,
+                    regFee: document.getElementById('regFee').value,
+                    description: document.getElementById('eventDescription').value,
+                    banner: fileName.textContent !== 'No file chosen' ? fileName.textContent : null,
+                    status: status
+                };
+
+                // Validate required fields
+                if (!formData.title || !formData.category || !formData.dateTime || 
+                    !formData.venue || !formData.maxParticipants || !formData.regFee || 
+                    !formData.description) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                fetch('/submit-event', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Event ${status === 'Draft' ? 'saved as draft' : 'submitted for approval'} successfully!`);
+                        resetForm();
+                        createEventForm.classList.add('hidden');
+                        loadOrganizerEvents(); // Refresh the events list
+                    } else {
+                        alert('Error: ' + (data.error || 'Failed to submit event'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting event');
+                });
+            }
+
+            // Reset form
+            function resetForm() {
+                eventForm.reset();
+                fileName.textContent = 'No file chosen';
+            }
+
+            // Get status class for styling
+            function getStatusClass(status) {
+                switch(status) {
+                    case 'Approved': return 'status-approved';
+                    case 'Pending': return 'status-pending';
+                    case 'Draft': return 'status-draft';
+                    default: return '';
+                }
+            }
+
+            // Event action functions
+            window.viewEvent = function(eventId) {
+                alert(`Viewing event with ID: ${eventId}`);
+                // In a real app, you would show a modal with event details
+            };
+
+            window.editEvent = function(eventId) {
+                alert(`Editing event with ID: ${eventId}`);
+                // In a real app, you would populate the form with event data
+            };
+
+            window.deleteEvent = function(eventId) {
+                if (confirm('Are you sure you want to delete this event?')) {
+                    fetch(`/delete-event/${eventId}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Event deleted successfully');
+                            loadOrganizerEvents(); // Refresh the events list
+                        } else {
+                            alert('Error: ' + (data.error || 'Failed to delete event'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error deleting event');
+                    });
+                }
+            };
+        });
+    </script>
+</body>
+</html>

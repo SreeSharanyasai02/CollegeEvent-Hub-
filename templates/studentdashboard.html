@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Event Hub - Student Dashboard</title>
+  <link rel="stylesheet" href="/static/student3.css">
+  <style>
+    /* Modal Styles */
+
+  /* ===== Shiva's Modal Blessing ===== */
+/* ===== Debugged Modal CSS ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000; /* Extreme priority */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9); /* Darker overlay */
+}
+
+#registrationModal {
+  display: none;
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background: #252546;
+  margin: 10% auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 8px;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== End of Debugged CSS ===== */
+
+
+/* ===== End of Blessing ===== */
+
+    .close-modal {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .form-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #333350;
+    background-color: #1a1a2e;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+    font-weight: 500;
+}
+
+    .submit-btn {
+        background-color: #ff3687;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .register-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 0;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+  <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
+ 
+</div>
+      <h1>College Event Hub</h1>
+    
+    
+    <div class="nav-menu">
+      <a href="#discover-section" class="nav-item active">
+        <i>🔍</i>
+        <span>Discover Events</span>
+      </a>
+      
+    </div>
+    
+    <div class="user-profile">
+      <div class="avatar">S</div>
+      <div class="user-info">
+        <span class="user-name">{{ student_name }}</span>
+        <span class="user-role">Student</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Discover Section -->
+    <div class="content-section active" id="discover-section">
+      <div class="top-section">
+        <h2>Discover Events</h2>
+        <div class="filter-tags">
+          <span class="filter-tag active">All Events</span>
+          <span class="filter-tag">Technical</span>
+          <span class="filter-tag">Cultural</span>
+          <span class="filter-tag">Sports</span>
+          <span class="filter-tag">Non-Technical</span>
+        </div>
+      </div>
+      
+      <div class="events-grid">
+        {% for event in events %}
+        <div class="event-card" data-id="{{ event.id }}">
+          <h3 class="event-title">{{ event.title }}</h3>
+          <div class="event-date">
+            <i>📅</i> {{ event.date }}
+          </div>
+          <p class="event-description">
+            {{ event.description }}
+          </p>
+          <div class="event-meta">
+            <span class="event-category {{ event.category.lower() }}">{{ event.category }}</span>
+            <div class="event-stats">
+              <span class="event-stat"><i>👥</i> {{ event.current_participants }}/{{ event.max_participants }}</span>
+              <span class="event-stat"><i>💰</i> {{ event.fee }}</span>
+            </div>
+          </div>
+          <a href="{{ url_for('stureg') }}?event_id={{ event.id }}" class="register-btn">
+            Register Now
+        </a>
+        
+        
+        
+        
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Other Sections -->
+    <div class="content-section" id="registrations-section">
+      <!-- My Registrations content -->
+    </div>
+    
+    <div class="content-section" id="history-section">
+      <!-- History content -->
+    </div>
+    
+    <div class="content-section" id="notifications-section">
+      <!-- Notifications content -->
+    </div>
+    
+    <div class="content-section" id="profile-section">
+      <!-- Profile content -->
+    </div>
+  </div>
+<!-- Registration Modal -->
+<div class="modal" id="registrationModal">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal()">✕</span>
+    <h2>Register for <span id="modalEventTitle"></span></h2>
+    <form id="registrationForm">
+      <div class="form-group">
+        <label>Full Name*</label>
+        <input type="text" id="regName" required value="{{ student_name }}">
+      </div>
+      <div class="form-group">
+        <label>Email*</label>
+        <input type="email" id="regEmail" required value="{{ student_email }}">
+      </div>
+      <div class="form-group">
+        <label>Roll Number*</label>
+        <input type="text" id="regRollNo" required placeholder="e.g., 21B81A05J0">
+      </div>
+      <div class="form-group">
+        <label>Branch*</label>
+        <input type="text" id="regBranch" required placeholder="e.g., CSE, ECE, etc.">
+      </div>
+      <div class="form-group">
+        <label>Section*</label>
+        <input type="text" id="regSection" required placeholder="e.g., A, B, C, etc.">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="(optional)">
+      </div>
+      <button type="submit" class="submit-btn">Complete Registration</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Registration System
+  let currentEventId = null;
+
+function showRegistrationModal(eventId, eventTitle) {
+    currentEventId = eventId;
+    document.getElementById('modalEventTitle').textContent = eventTitle;
+    document.getElementById('registrationModal').style.display = 'block';
+}
+
+
+function closeModal() {
+    document.getElementById('registrationModal').style.display = 'none';
+}
+
+
+window.onload = () => {
+  document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+      event_id: currentEventId,
+      name: document.getElementById('regName').value.trim(),
+      email: document.getElementById('regEmail').value.trim(),
+      roll_no: document.getElementById('regRollNo').value.trim(),
+      branch: document.getElementById('regBranch').value.trim(),
+      section: document.getElementById('regSection').value.trim(),
+      phone: document.getElementById('regPhone').value.trim() || null
+    };
+
+    if (!formData.name || !formData.email || !formData.roll_no || !formData.branch || !formData.section) {
+      alert('Please fill all required fields (marked with *)');
+      return;
+    }
+
+    try {
+      const response = await fetch('/register-event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('✅ ' + result.message);
+        closeModal();
+        const counter = document.querySelector(`.event-card[data-id="${currentEventId}"] .event-stat:first-child`);
+        if (counter) {
+          const [_, max] = counter.textContent.split('/');
+          counter.textContent = `${result.new_count}/${max}`;
+        }
+      } else {
+        alert('❌ ' + (result.error || 'Registration failed'));
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('⚠️ Network error - please try again');
+    }
+  });
+};
+
+
+      // Validate required fields
+      if (!formData.name || !formData.email || !formData.roll_no || !formData.branch || !formData.section) {
+          alert('Please fill all required fields (marked with *)');
+          return;
+      }
+
+      try {
+          const response = await fetch('/register-event', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+              alert('✅ ' + result.message);
+              closeModal();
+              // Update participant count in UI
+              const counter = document.querySelector(`.event-card[data-id="${currentEventId}"] .event-stat:first-child`);
+              if (counter) {
+                  const [_, max] = counter.textContent.split('/');
+                  counter.textContent = `${result.new_count}/${max}`;
+              }
+          } else {
+              alert('❌ ' + (result.error || 'Registration failed'));
+          }
+      } catch (error) {
+          console.error('Registration error:', error);
+          alert('⚠️ Network error - please try again');
+      }
+  });
+
+  // Close modal when clicking outside
+  window.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('registrationModal')) {
+          closeModal();
+      }
+  });
+  
+</script>
+
+
+
+</body>
+</html>

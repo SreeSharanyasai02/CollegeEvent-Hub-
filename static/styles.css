@@ -1,0 +1,234 @@
+/* General Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Registration items */
+.registration-item {
+    background-color: #1a1a2e;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #09f2d6;
+}
+
+.registration-item h4 {
+    margin-top: 0;
+    color: #09f2d6;
+}
+
+.registration-item p {
+    margin: 5px 0;
+}
+
+.view-details-btn {
+    background-color: #5c31ff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.view-details-btn:hover {
+    background-color: #4a27cc;
+}
+
+/* Modal styles */
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+body {
+    background-color: #1a1e2e;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.main-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.subtitle {
+    font-size: 20px;
+    margin-bottom: 40px;
+    color: #ffffff;
+}
+
+/* Roles Layout */
+.roles {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+/* Role Card Styling */
+.role-card {
+    background-color: #21263b;
+    border-radius: 16px;
+    padding: 40px 30px;
+    width: 280px;
+    height: 380px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Role-Specific Borders */
+.admin {
+    border: 2px solid #27205d;
+}
+
+.organizer {
+    border: 2px solid #ff6b81;
+}
+
+.student {
+    border: 2px solid #00e0c6;
+}
+
+/* Icon Circle */
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.admin-circle {
+    background-color: #6c5ce7;
+}
+
+.organizer-circle {
+    background-color: #ff6b81;
+}
+
+.student-circle {
+    background-color: #00e0c6;
+}
+
+/* Icons Styling */
+.role-card i {
+    font-size: 34px;
+    color: white;
+}
+
+/* Text Styling */
+.role-card h3 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.role-card p {
+    color: #a0a6b3;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+    flex-grow: 1;
+}
+
+/* Buttons */
+.role-button {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.admin-button {
+    background-color: #6c5ce7;
+}
+
+.organizer-button {
+    background-color: #ff6b81;
+}
+
+.student-button {
+    background-color: #00e0c6;
+}
+
+.admin-button:hover {
+    background-color: #5d4ed6;
+}
+
+.organizer-button:hover {
+    background-color: #ff5a73;
+}
+
+.student-button:hover {
+    background-color: #00c9b2;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .roles {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .role-card {
+        width: 100%;
+        max-width: 280px;
+        margin-bottom: 20px;
+    }
+}
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+
+  
+  .logo-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  
+  
