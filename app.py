@@ -363,4 +363,4 @@ def organizer_registrations():
     return render_template('registrations.html', all_regs=all_regs)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',debug=True)
