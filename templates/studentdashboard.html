@@ -289,8 +289,6 @@ window.onload = () => {
     }
   });
 };
-
-
       // Validate required fields
       if (!formData.name || !formData.email || !formData.roll_no || !formData.branch || !formData.section) {
           alert('Please fill all required fields (marked with *)');
@@ -322,7 +320,7 @@ window.onload = () => {
           console.error('Registration error:', error);
           alert('⚠️ Network error - please try again');
       }
-  });
+
 
   // Close modal when clicking outside
   window.addEventListener('click', (e) => {

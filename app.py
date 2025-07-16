@@ -102,13 +102,6 @@ def student_login():
     
     return render_template("login3.html")
 
-# @app.route('/student-dashboard')
-# def student_dashboard():
-#     # No authentication check - anyone can access
-#     return render_template('studentdashboard.html',
-#                          student_name=session.get('student_name', 'Student'),
-#                          student_email=session.get('student_email', 'student@example.com'))
-# Admin Dashboard
 @app.route('/admin-dashboard')
 def admin_dashboard():
     if session.get('user') == 'admin':
@@ -201,8 +194,6 @@ def delete_event(event_id):
 
 # ... (keep all your existing imports and configurations the same)
 
-# ... (keep all your existing routes until student_dashboard)
-
 @app.route('/student-dashboard')
 def student_dashboard():
     if 'user' not in session or session.get('user') != 'student':
@@ -236,16 +227,6 @@ def student_dashboard():
                          student_name=session.get('student_name', 'Student'),
                          student_email=session.get('student_email', 'student@example.com'),
                          events=student_events)
-
-
-
-
-    
-
-
-
-
-
 @app.route('/get-registrations/<int:event_id>')
 def get_registrations(event_id):
     if 'user' not in session or session['user'] not in ['admin', 'organizer']:
@@ -295,7 +276,6 @@ def stureg():
 
     return render_template('stureg.html', registrations=student_registrations)
 
-
 @app.route('/register-event', methods=['POST'])
 def register_event():
     if 'user' not in session or session['user'] != 'student':
@@ -344,12 +324,7 @@ def register_event():
     event['current_participants'] += 1
 
     return redirect(url_for('stureg'))
-
 # ... existing routes ...
-
-
-
-
 @app.route('/display')
 def display():
     return render_template('display.html')
@@ -386,7 +361,6 @@ def organizer_registrations():
             })
 
     return render_template('registrations.html', all_regs=all_regs)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
